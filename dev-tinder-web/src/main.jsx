@@ -6,6 +6,8 @@ import Login from "./components/Login.jsx";
 import Profile from "./components/Profile.jsx";
 import Feed from "./components/Feed.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router";
+import { Provider } from "react-redux";
+import appStore from "./utils/store/appStore.js";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +23,7 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "/",
+        path: "/feed",
         element: <Feed />,
       },
     ],
@@ -35,8 +37,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router}>
-      <App />
-    </RouterProvider>
+    <Provider store={appStore}>
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>
+    </Provider>
   </StrictMode>
 );
