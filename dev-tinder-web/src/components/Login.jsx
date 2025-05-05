@@ -3,14 +3,15 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/store/userSlice";
+import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
+    email: "ben@gmail.com",
+    password: "Benten@123",
   });
 
   const handleChange = (e) => {
@@ -27,7 +28,7 @@ const Login = () => {
     const { email, password } = credentials;
     try {
       const res = await axios.post(
-        "http://localhost:5000/login",
+        `${BASE_URL}/login`,
         {
           emailId: email,
           password: password,
@@ -36,7 +37,7 @@ const Login = () => {
       );
       if (res.status === 200) {
         dispatch(addUser(res.data.data));
-        navigate("/feed");
+        navigate("/");
       }
     } catch (error) {
       console.log(error.message);

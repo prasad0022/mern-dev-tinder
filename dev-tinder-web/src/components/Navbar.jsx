@@ -3,6 +3,7 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../utils/store/userSlice";
+import { BASE_URL } from "../utils/constants";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -18,7 +19,9 @@ const Navbar = () => {
             src="https://img.icons8.com/ios/50/FFFFFF/source-code.png"
             alt="source-code"
           />
-          <a className="btn btn-ghost text-xl w-28 items-center">DevTinder</a>
+          <NavLink to={"/"} className="btn btn-ghost text-xl w-28 items-center">
+            DevTinder
+          </NavLink>
         </div>
       </div>
       {user && (
@@ -39,10 +42,10 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
+                <NavLink to={"/profile"} className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </NavLink>
               </li>
               <li>
                 <a>Settings</a>
@@ -53,7 +56,9 @@ const Navbar = () => {
                     onClick={async () => {
                       try {
                         const res = await axios.post(
-                          "http://localhost:5000/logout"
+                          `${BASE_URL}/logout`,
+                          {},
+                          { withCredentials: true }
                         );
                         if (res.status === 200) {
                           dispatch(removeUser());
