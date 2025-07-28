@@ -1,9 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const Profile = () => {
   const user = useSelector((store) => store.user);
-
+  const nevigate = useNavigate();
   return (
     <div className="hero bg-base-200">
       <div className="hero-content flex-col lg:flex-row">
@@ -14,7 +15,12 @@ const Profile = () => {
           <p className="py-1">Age: {user?.age}</p>
           <p className="py-1">About: {user?.about}</p>
           <p className="py-1">Skills: {user?.skills.join(", ")}</p>
-          <button className="mt-4 btn btn-primary">Update Profile</button>
+          <button
+            onClick={() => nevigate("/edit/profile")}
+            className="mt-4 btn btn-primary"
+          >
+            Update Profile
+          </button>
         </div>
       </div>
     </div>

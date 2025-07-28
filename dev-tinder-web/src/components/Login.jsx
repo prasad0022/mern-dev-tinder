@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/store/userSlice";
 import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((store) => store.user);
+
+  if (user) navigate("/");
 
   const [credentials, setCredentials] = useState({
     email: "ben@gmail.com",

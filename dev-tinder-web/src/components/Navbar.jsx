@@ -10,6 +10,22 @@ const Navbar = () => {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
+  const handleLogout = async () => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/logout`,
+        {},
+        { withCredentials: true }
+      );
+      if (res.status === 200) {
+        dispatch(removeUser());
+        return navigate("/login");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="navbar bg-base-100 shadow-sm px-10">
       <div className="flex-1">
@@ -51,27 +67,7 @@ const Navbar = () => {
                 <a>Settings</a>
               </li>
               <li>
-                <NavLink to={"/login"}>
-                  <p
-                    onClick={async () => {
-                      try {
-                        const res = await axios.post(
-                          `${BASE_URL}/logout`,
-                          {},
-                          { withCredentials: true }
-                        );
-                        if (res.status === 200) {
-                          dispatch(removeUser());
-                          navigate("/login");
-                        }
-                      } catch (err) {
-                        console.log(err);
-                      }
-                    }}
-                  >
-                    Logout
-                  </p>
-                </NavLink>
+                <p onClick={handleLogout}>Logout</p>
               </li>
             </ul>
           </div>

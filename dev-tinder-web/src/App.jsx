@@ -23,7 +23,7 @@ const App = () => {
         dispatch(addUser(res.data));
       } catch (error) {
         if (error.status === 401) {
-          navigate("/login");
+          return navigate("/login");
         } else {
           console.error(error);
         }
