@@ -60,11 +60,13 @@ const Navbar = () => {
               <li>
                 <NavLink to={"/profile"} className="justify-between">
                   Profile
-                  <span className="badge">New</span>
                 </NavLink>
               </li>
               <li>
-                <a>Settings</a>
+                <NavLink to={"/connections"}>Connections</NavLink>
+              </li>
+              <li>
+                <NavLink to={"/requests"}>Requests</NavLink>
               </li>
               <li>
                 <p onClick={handleLogout}>Logout</p>

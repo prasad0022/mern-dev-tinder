@@ -28,8 +28,9 @@ const Feed = () => {
   }, []);
 
   return (
-    <div className="flex justify-center">
-      {feed && feed.map((dev) => <DevCard key={dev._id} dev={dev} />)}
+    <div className="flex justify-center flex-wrap">
+      {feed &&
+        feed.map((dev) => <DevCard key={dev._id} dev={dev} type={"feed"} />)}
     </div>
   );
 };

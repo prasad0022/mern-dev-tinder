@@ -129,7 +129,7 @@ const EditProfile = () => {
         </div>
         <div>
           <h2 className="card-title justify-center mb-2 text-2xl">Preview</h2>
-          <DevCard dev={profile} />
+          <DevCard dev={profile} type={"profile"} />
         </div>
       </div>
     )
