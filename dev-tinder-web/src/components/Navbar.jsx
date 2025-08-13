@@ -3,6 +3,9 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../utils/store/userSlice";
+import { removeConnections } from "../utils/store/connectionsSlice";
+import { removeFeed } from "../utils/store/feedSlice";
+import { removeRequests } from "../utils/store/requestsSlice";
 import { BASE_URL } from "../utils/constants";
 
 const Navbar = () => {
@@ -19,6 +22,9 @@ const Navbar = () => {
       );
       if (res.status === 200) {
         dispatch(removeUser());
+        dispatch(removeConnections());
+        dispatch(removeFeed());
+        dispatch(removeRequests());
         return navigate("/login");
       }
     } catch (err) {
