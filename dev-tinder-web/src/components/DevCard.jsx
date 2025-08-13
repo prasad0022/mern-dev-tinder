@@ -1,6 +1,27 @@
 import React from "react";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { removeRequest } from "../utils/store/requestsSlice";
 
 const DevCard = ({ dev, type }) => {
+  const dispatch = useDispatch();
+
+  const reviewRequests = async (status) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/request/review/${status}/${dev?._id}`,
+        {},
+        { withCredentials: true }
+      );
+      if (res) {
+        dispatch(removeRequest(dev?._id));
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   return (
     <div className="flex justify-center mt-5 p-3">
       <div className="card bg-base-200 w-80 shadow-sm">
@@ -32,8 +53,18 @@ const DevCard = ({ dev, type }) => {
           )}
           {type === "request" && (
             <div className="card-actions justify-center mt-4 gap-8">
-              <button className="btn btn-soft btn-error">Reject</button>
-              <button className="btn btn-soft btn-success">Accept</button>
+              <button
+                className="btn btn-soft btn-error"
+                onClick={() => reviewRequests("rejected")}
+              >
+                Reject
+              </button>
+              <button
+                className="btn btn-soft btn-success"
+                onClick={() => reviewRequests("accepted")}
+              >
+                Accept
+              </button>
             </div>
           )}
         </div>

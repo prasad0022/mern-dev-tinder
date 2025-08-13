@@ -23,7 +23,7 @@ const Connections = () => {
     };
     fetchConnections();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [connections]);
 
   if (!connections) return;
 

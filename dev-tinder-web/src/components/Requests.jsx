@@ -26,9 +26,7 @@ const Requests = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!requests) return;
-
-  if (requests.length === 0)
+  if (!requests || requests.length === 0)
     return <h1 className="text-center mt-10 text-2xl">No pending requests</h1>;
 
   return (
