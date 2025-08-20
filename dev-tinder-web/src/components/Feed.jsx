@@ -29,8 +29,7 @@ const Feed = () => {
 
   return (
     <div className="flex justify-center flex-wrap">
-      {feed &&
-        feed.map((dev) => <DevCard key={dev._id} dev={dev} type={"feed"} />)}
+      {feed && <DevCard key={feed[0]._id} dev={feed[0]} type={"feed"} />}
     </div>
   );
 };

@@ -3,9 +3,25 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { removeRequest } from "../utils/store/requestsSlice";
+import { removeFeedUser } from "../utils/store/feedSlice";
 
 const DevCard = ({ dev, type }) => {
   const dispatch = useDispatch();
+
+  const sendRequest = async (status) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/request/send/${status}/${dev?._id}`,
+        {},
+        { withCredentials: true }
+      );
+      if (res) {
+        dispatch(removeFeedUser(dev?._id));
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   const reviewRequests = async (status) => {
     try {
@@ -47,8 +63,18 @@ const DevCard = ({ dev, type }) => {
           )}
           {type === "feed" && (
             <div className="card-actions justify-center mt-4 gap-8">
-              <button className="btn btn-soft btn-error">Reject</button>
-              <button className="btn btn-soft btn-success">Connect</button>
+              <button
+                className="btn btn-soft btn-error"
+                onClick={() => sendRequest("ignored")}
+              >
+                Reject
+              </button>
+              <button
+                className="btn btn-soft btn-success"
+                onClick={() => sendRequest("interested")}
+              >
+                Connect
+              </button>
             </div>
           )}
           {type === "request" && (
