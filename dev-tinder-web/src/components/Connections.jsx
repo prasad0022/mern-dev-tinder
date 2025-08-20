@@ -25,9 +25,7 @@ const Connections = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connections]);
 
-  if (!connections) return;
-
-  if (connections.length === 0)
+  if (!connections || connections.length === 0)
     return (
       <h1 className="text-center mt-10 text-2xl">No connections found 😔</h1>
     );

@@ -33,9 +33,12 @@ authRouter.post("/signup", async (req, res) => {
                 emailId,
                 password: hashPassword,
             });
-            await newUser.save();
+            const signedUpUser = await newUser.save();
 
-            return res.status(201).json({ success: true, message: "Signed Up Successfully!" });
+            const JWT = signedUpUser.getJWT();
+            res.cookie("token", JWT);
+
+            return res.status(201).json({ success: true, message: "Signed Up Successfully!", data: signedUpUser });
 
         } else {
             return res.status(400).json({ success: false, message: "Please provide all the fields" });

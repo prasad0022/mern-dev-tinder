@@ -10,25 +10,17 @@ const Login = () => {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
-  if (user) navigate("/");
+  const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState("");
 
-  const [credentials, setCredentials] = useState({
-    email: "ben@gmail.com",
-    password: "Benten@123",
-  });
+  if (isLogin && user) navigate("/");
 
-  const handleChange = (e) => {
-    const { value, name } = e.target;
-    setCredentials((preVal) => {
-      return {
-        ...preVal,
-        [name]: value,
-      };
-    });
-  };
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState(""); // ben@gmail.com
+  const [password, setPassword] = useState(""); // Benten@123
 
-  const handleSubmit = async () => {
-    const { email, password } = credentials;
+  const handleLogin = async () => {
     try {
       const res = await axios.post(
         `${BASE_URL}/login`,
@@ -39,60 +31,112 @@ const Login = () => {
         { withCredentials: true }
       );
       if (res.status === 200) {
+        setError("");
         dispatch(addUser(res.data.data));
         navigate("/");
       }
     } catch (error) {
-      console.log(error.message);
+      setError(error.message);
+    }
+  };
+
+  const handleSignUp = async () => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/signup`,
+        {
+          firstName: firstName,
+          lastName: lastName,
+          emailId: email,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+      if (res.status === 201) {
+        setError("");
+        dispatch(addUser(res.data.data));
+        navigate("/profile");
+      }
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
   return (
-    <div className="flex justify-center mt-15">
+    <div className="flex justify-center mt-8">
       <div className="card card-border bg-base-200 w-96">
         <div className="card-body">
-          <h2 className="card-title justify-center mb-2 text-2xl">Dev Login</h2>
+          <h2 className="card-title justify-center mb-2 text-2xl">
+            Dev {isLogin ? "Login" : "SignUp"}
+          </h2>
+          {!isLogin && (
+            <>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-lg">First Name</legend>
+                <input
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="input validator"
+                  type="text"
+                  name="firstName"
+                  required
+                  value={firstName}
+                />
+              </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend text-lg">Last Name</legend>
+                <input
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="input validator"
+                  type="text"
+                  name="lastName"
+                  required
+                  value={lastName}
+                />
+              </fieldset>
+            </>
+          )}
           <fieldset className="fieldset">
             <legend className="fieldset-legend text-lg">Email</legend>
             <input
-              onChange={handleChange}
+              onChange={(e) => setEmail(e.target.value)}
               className="input validator"
               type="email"
               name="email"
               required
               placeholder="mail@site.com"
-              value={credentials.email}
+              value={email}
             />
           </fieldset>
           <fieldset className="fieldset">
             <legend className="fieldset-legend text-lg">Password</legend>
             <input
-              onChange={handleChange}
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
               name="password"
               className="input validator"
               required
               placeholder="Password"
-              value={credentials.password}
+              value={password}
               minLength="8"
               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
             />
-            <p className="validator-hint">
-              Must be more than 8 characters, including
-              <br />
-              At least one number
-              <br />
-              At least one lowercase letter
-              <br />
-              At least one uppercase letter
-            </p>
           </fieldset>
-          <div className="card-actions justify-center">
-            <button onClick={handleSubmit} className="btn btn-primary">
-              Login
+          <p className="text-red-500">{error}</p>
+          <div className="card-actions justify-center mt-3">
+            <button
+              onClick={isLogin ? handleLogin : handleSignUp}
+              className="btn btn-primary"
+            >
+              {isLogin ? "Login" : "Sign Up"}
             </button>
           </div>
+          <p
+            className="m-auto pt-3 cursor-pointer text-gray-400 hover:text-white"
+            onClick={() => setIsLogin((val) => !val)}
+          >
+            {isLogin ? "New user? Sign up here" : "Existing user? Login here"}
+          </p>
         </div>
       </div>
     </div>
