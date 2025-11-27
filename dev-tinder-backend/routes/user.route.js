@@ -58,7 +58,7 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
             status: "interested"
         }).populate("fromUserId", USER_SAFE_DATA);
 
-        if (pendingRequests.length == 0) return res.status(404).json({ success: false, message: "Connection requests not found!" });
+        if (pendingRequests.length == 0) return res.status(206).json({ success: false, message: "Connection requests not found!", data: [] });
 
         return res.status(200).json({ success: true, data: pendingRequests });
 
@@ -83,7 +83,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
             .populate("fromUserId", USER_SAFE_DATA)
             .populate("toUserId", USER_SAFE_DATA)
 
-        if (connections.length == 0) return res.status(404).json({ success: false, message: "Connections not found!" });
+        if (connections.length == 0) return res.status(206).json({ success: false, message: "Connections not found!", data: [] });
 
         const data = connections.map((conn) => {
             if (conn.fromUserId._id.toString() === loggedInUser._id.toString()) return conn.toUserId;

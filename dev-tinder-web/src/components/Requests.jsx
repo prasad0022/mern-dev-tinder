@@ -8,7 +8,6 @@ import DevCard from "./DevCard";
 const Requests = () => {
   const dispatch = useDispatch();
   const requests = useSelector((store) => store.requests);
-  console.log(requests);
 
   useEffect(() => {
     const fetchConnections = async () => {
@@ -26,20 +25,27 @@ const Requests = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!requests || requests.length === 0)
+  if (!requests) {
+    // Still loading (connections is null/undefined)
+    return (
+      <div className="flex justify-center items-center mt-30">
+        <span className="loading loading-dots loading-xl"></span>
+      </div>
+    );
+  }
+
+  if (requests.length === 0)
     return <h1 className="text-center mt-10 text-2xl">No pending requests</h1>;
 
   return (
-    requests && (
-      <>
-        <h1 className="text-center mt-5 text-2xl">Pending requests</h1>
-        <div className="flex justify-center">
-          {requests.map((dev) => (
-            <DevCard key={dev._id} dev={dev} type={"request"} />
-          ))}
-        </div>
-      </>
-    )
+    <>
+      <h1 className="text-center mt-5 text-2xl">Pending requests</h1>
+      <div className="flex justify-center">
+        {requests.map((dev) => (
+          <DevCard key={dev._id} dev={dev} type={"request"} />
+        ))}
+      </div>
+    </>
   );
 };
 

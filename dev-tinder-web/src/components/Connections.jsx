@@ -25,22 +25,29 @@ const Connections = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connections]);
 
-  if (!connections || connections.length === 0)
+  if (!connections) {
+    // Still loading (connections is null/undefined)
+    return (
+      <div className="flex justify-center items-center mt-30">
+        <span className="loading loading-dots loading-xl"></span>
+      </div>
+    );
+  }
+
+  if (connections.length === 0)
     return (
       <h1 className="text-center mt-10 text-2xl">No connections found 😔</h1>
     );
 
   return (
-    connections && (
-      <>
-        <h1 className="text-center mt-5 text-2xl">My connections</h1>
-        <div className="flex justify-center">
-          {connections.map((dev) => (
-            <DevCard key={dev._id} dev={dev} type={"profile"} />
-          ))}
-        </div>
-      </>
-    )
+    <>
+      <h1 className="text-center mt-5 text-2xl">My connections</h1>
+      <div className="flex justify-center">
+        {connections.map((dev) => (
+          <DevCard key={dev._id} dev={dev} type={"profile"} />
+        ))}
+      </div>
+    </>
   );
 };
 

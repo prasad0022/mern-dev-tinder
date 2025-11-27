@@ -43,7 +43,7 @@ const DevCard = ({ dev, type }) => {
       <div className="card bg-base-200 w-80 shadow-sm">
         <figure>
           <img
-            className="w-full h-full"
+            className="w-full h-80"
             src={type === "request" ? dev?.fromUserId?.photoURL : dev?.photoURL}
             alt="dev-photo"
           />
